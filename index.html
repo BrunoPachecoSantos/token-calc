@@ -38,7 +38,7 @@
     }
 
     .app-card {
-      width: min(100%, 520px);
+      width: min(100%, 1040px);
       padding: 32px;
       border: 1px solid rgba(216, 225, 236, 0.75);
       border-radius: 8px;
@@ -152,6 +152,112 @@
       font-weight: 700;
     }
 
+    .comparison-section {
+      margin-top: 36px;
+    }
+
+    .comparison-title {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .comparison-intro {
+      color: var(--muted);
+      margin: 0 0 16px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .models-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .model-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 160ms ease, border-color 160ms ease;
+    }
+
+    .model-checkbox:hover {
+      background: #f8fbff;
+      border-color: var(--accent);
+    }
+
+    .model-checkbox input[type="checkbox"] {
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+    }
+
+    .model-checkbox label {
+      cursor: pointer;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .comparison-table thead {
+      background: var(--result-bg);
+      border-bottom: 2px solid var(--border);
+    }
+
+    .comparison-table th {
+      padding: 12px;
+      text-align: left;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .comparison-table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .comparison-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .comparison-table tbody tr.cheapest {
+      background: rgba(18, 103, 216, 0.05);
+      font-weight: 600;
+    }
+
+    .comparison-table tbody tr.cheapest td {
+      color: var(--accent);
+    }
+
+    .cheapest-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-left: 6px;
+    }
+
     @media (max-width: 540px) {
       body {
         padding: 16px;
@@ -192,11 +298,7 @@
 
       <label for="model-select">
         Modelo
-        <select id="model-select">
-          <option value="fastmini">FastMini</option>
-          <option value="balancedpro">BalancedPro</option>
-          <option value="reasonmax">ReasonMax</option>
-        </select>
+        <select id="model-select"></select>
       </label>
 
       <button type="submit">Calcular</button>
@@ -205,11 +307,28 @@
     <section id="result" class="result-box" aria-live="polite">
       Introduz os valores e clica em Calcular para ver o custo estimado.
     </section>
+
+    <section class="comparison-section">
+      <h2 class="comparison-title">Comparação de Modelos</h2>
+      <p class="comparison-intro">
+        Seleciona dois ou mais modelos para comparar custos com os mesmos tokens acima.
+      </p>
+      <div class="models-grid" id="models-grid"></div>
+      <section id="comparison-result" class="result-box" aria-live="polite">
+        Seleciona modelos para comparar.
+      </section>
+      <div id="comparison-chart" style="display: none; margin-top: 24px;">
+        <h3 style="margin: 0 0 12px; font-weight: 700; font-size: 1rem;">Gráfico de Comparação</h3>
+        <svg id="chart-svg" style="width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; background: white;"></svg>
+      </div>
+    </section>
   </main>
 
   <script>
-    // Preços fictícios por 1 milhão de tokens.
+    // Preços em tempo real: 3 modelos originais + 10 do OpenRouter API
+    // Preços por 1 milhão de tokens
     const MODELS = {
+      // Modelos originais (imutáveis)
       fastmini: {
         name: 'FastMini',
         inputPrice: 0.10,
@@ -224,6 +343,57 @@
         name: 'ReasonMax',
         inputPrice: 5.00,
         outputPrice: 15.00
+      },
+      // Modelos OpenRouter (imutáveis)
+      inclusionai_ling_26_flash: {
+        name: 'inclusionAI: Ling-2.6-flash',
+        inputPrice: 0.01,
+        outputPrice: 0.03
+      },
+      mistralai_mistral_small_32_24b_instruct: {
+        name: 'Mistral: Mistral Small 3.2 24B',
+        inputPrice: 0.075,
+        outputPrice: 0.2
+      },
+      nousresearch_hermes_4_70b: {
+        name: 'Nous: Hermes 4 70B',
+        inputPrice: 0.13,
+        outputPrice: 0.4
+      },
+      qwen_qwen3_coder_next: {
+        name: 'Qwen: Qwen3 Coder Next',
+        inputPrice: 0.11,
+        outputPrice: 0.8
+      },
+      nousresearch_hermes_3_llama_31_70b: {
+        name: 'Nous: Hermes 3 70B Instruct',
+        inputPrice: 0.7,
+        outputPrice: 0.7
+      },
+      openai_gpt_41_mini: {
+        name: 'OpenAI: GPT-4.1 Mini',
+        inputPrice: 0.4,
+        outputPrice: 1.6
+      },
+      amazon_nova_2_lite_v1: {
+        name: 'Amazon: Nova 2 Lite',
+        inputPrice: 0.3,
+        outputPrice: 2.5
+      },
+      z_ai_glm_5v_turbo: {
+        name: 'Z.ai: GLM 5V Turbo',
+        inputPrice: 1.2,
+        outputPrice: 4
+      },
+      google_gemini_25_pro: {
+        name: 'Google: Gemini 2.5 Pro',
+        inputPrice: 1.25,
+        outputPrice: 10
+      },
+      openai_gpt_54: {
+        name: 'OpenAI: GPT-5.4',
+        inputPrice: 2.5,
+        outputPrice: 15
       }
     };
 
@@ -312,13 +482,238 @@
       document
         .getElementById('calculator-form')
         .addEventListener('submit', handleSubmit);
+      
+      renderModelSelect();
+      renderModelCheckboxes();
+      initComparisonListener();
     }
+
+    function renderModelCheckboxes() {
+      const grid = document.getElementById('models-grid');
+      grid.innerHTML = '';
+
+      Object.keys(MODELS).forEach(key => {
+        const model = MODELS[key];
+        const checkbox = document.createElement('div');
+        checkbox.className = 'model-checkbox';
+        checkbox.innerHTML = `
+          <input type="checkbox" id="model-${key}" value="${key}">
+          <label for="model-${key}">${model.name}</label>
+        `;
+        grid.appendChild(checkbox);
+      });
+    }
+
+    function renderModelSelect() {
+      const select = document.getElementById('model-select');
+      select.innerHTML = '';
+
+      Object.keys(MODELS).forEach(key => {
+        const model = MODELS[key];
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = model.name;
+        select.appendChild(option);
+      });
+    }
+
+    function initComparisonListener() {
+      const grid = document.getElementById('models-grid');
+      grid.addEventListener('change', updateComparison);
+    }
+
+    function getSelectedModels() {
+      const checkboxes = document.querySelectorAll('#models-grid input[type="checkbox"]:checked');
+      return Array.from(checkboxes).map(cb => cb.value);
+    }
+
+    function calculateComparisonCosts(inputTokens, outputTokens, modelKeys) {
+      const results = [];
+
+      modelKeys.forEach(key => {
+        try {
+          const cost = calculateCost(inputTokens, outputTokens, key);
+          results.push({
+            key: key,
+            ...cost
+          });
+        } catch (error) {
+          // Skip models that fail validation
+        }
+      });
+
+      // Sort by total cost (ascending)
+      results.sort((a, b) => a.totalCost - b.totalCost);
+
+      return results;
+    }
+
+    function showComparison(costs) {
+      const resultElement = document.getElementById('comparison-result');
+      resultElement.className = 'result-box';
+
+      if (costs.length === 0) {
+        resultElement.textContent = 'Seleciona modelos para comparar.';
+        return;
+      }
+
+      const minCost = costs[0].totalCost;
+      let html = '<p class="result-title">Comparação de Modelos</p>';
+      html += '<table class="comparison-table"><thead><tr>';
+      html += '<th>Modelo</th><th>Custo Input</th><th>Custo Output</th><th>Custo Total</th>';
+      html += '</tr></thead><tbody>';
+
+      costs.forEach((cost, index) => {
+        const isCheapest = index === 0;
+        const rowClass = isCheapest ? 'cheapest' : '';
+        html += `<tr class="${rowClass}">`;
+        html += `<td>${cost.modelName}${isCheapest ? '<span class="cheapest-badge">Mais barato</span>' : ''}</td>`;
+        html += `<td>${formatEuro(cost.inputCost)}</td>`;
+        html += `<td>${formatEuro(cost.outputCost)}</td>`;
+        html += `<td>${formatEuro(cost.totalCost)}</td>`;
+        html += '</tr>';
+      });
+
+      html += '</tbody></table>';
+      resultElement.innerHTML = html;
+      
+      // Render chart
+      renderComparisonChart(costs);
+    }
+
+    function renderComparisonChart(costs) {
+      const chartContainer = document.getElementById('comparison-chart');
+      const svg = document.getElementById('chart-svg');
+      
+      if (costs.length === 0) {
+        chartContainer.style.display = 'none';
+        return;
+      }
+      
+      chartContainer.style.display = 'block';
+      
+      // Chart dimensions
+      const padding = 20;
+      const barHeight = 40;
+      const barSpacing = 12;
+      const maxLabelWidth = 250;
+      const chartHeight = costs.length * (barHeight + barSpacing) + padding * 2;
+      const chartWidth = 900;
+      const graphWidth = chartWidth - maxLabelWidth - padding * 2;
+      
+      // Find max cost for scaling
+      const maxCost = Math.max(...costs.map(c => c.totalCost));
+      const scale = maxCost > 0 ? graphWidth / maxCost : 1;
+      
+      // Clear SVG
+      svg.innerHTML = '';
+      svg.setAttribute('viewBox', `0 0 ${chartWidth} ${chartHeight}`);
+      svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+      
+      // Draw bars
+      costs.forEach((cost, index) => {
+        const y = padding + index * (barHeight + barSpacing);
+        const barWidth = cost.totalCost * scale;
+        const isCheapest = index === 0;
+        
+        // Bar background
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('x', maxLabelWidth + padding);
+        rect.setAttribute('y', y);
+        rect.setAttribute('width', barWidth);
+        rect.setAttribute('height', barHeight);
+        rect.setAttribute('fill', isCheapest ? '#1267d8' : '#d8e1ec');
+        rect.setAttribute('rx', '4');
+        svg.appendChild(rect);
+        
+        // Value text on bar
+        const valueText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        valueText.setAttribute('x', maxLabelWidth + padding + barWidth + 8);
+        valueText.setAttribute('y', y + barHeight / 2);
+        valueText.setAttribute('dy', '0.35em');
+        valueText.setAttribute('font-size', '15');
+        valueText.setAttribute('font-weight', isCheapest ? '700' : '500');
+        valueText.setAttribute('fill', isCheapest ? '#1267d8' : '#5f6f86');
+        valueText.textContent = formatEuro(cost.totalCost);
+        svg.appendChild(valueText);
+        
+        // Label (model name)
+        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.setAttribute('x', padding);
+        label.setAttribute('y', y + barHeight / 2);
+        label.setAttribute('dy', '0.35em');
+        label.setAttribute('font-size', '16');
+        label.setAttribute('font-weight', isCheapest ? '700' : '500');
+        label.setAttribute('fill', isCheapest ? '#1267d8' : '#172033');
+        label.setAttribute('text-anchor', 'start');
+        
+        // Truncate long names
+        let displayName = cost.modelName;
+        if (displayName.length > 20) {
+          displayName = displayName.substring(0, 17) + '...';
+        }
+        label.textContent = displayName;
+        svg.appendChild(label);
+        
+        // Cheapest badge
+        if (isCheapest) {
+          const badge = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          badge.setAttribute('x', padding);
+          badge.setAttribute('y', y + barHeight + 15);
+          badge.setAttribute('font-size', '11');
+          badge.setAttribute('font-weight', '700');
+          badge.setAttribute('fill', '#1267d8');
+          badge.textContent = '★ Mais barato';
+          svg.appendChild(badge);
+        }
+      });
+    }
+
+    function updateComparison() {
+      const selectedModels = getSelectedModels();
+      const inputTokens = document.getElementById('input-tokens').value;
+      const outputTokens = document.getElementById('output-tokens').value;
+      const resultElement = document.getElementById('comparison-result');
+
+      if (selectedModels.length < 2) {
+        resultElement.className = 'result-box';
+        resultElement.textContent = selectedModels.length === 0 
+          ? 'Seleciona modelos para comparar.'
+          : 'Seleciona pelo menos 2 modelos para comparar.';
+        return;
+      }
+
+      if (!inputTokens || !outputTokens) {
+        resultElement.className = 'result-box';
+        resultElement.textContent = 'Preenche os valores de tokens acima para comparar.';
+        return;
+      }
+
+      try {
+        const costs = calculateComparisonCosts(inputTokens, outputTokens, selectedModels);
+        showComparison(costs);
+      } catch (error) {
+        resultElement.className = 'result-box error';
+        resultElement.textContent = error.message;
+      }
+    }
+
+    // Listener para atualizar comparação quando tokens mudam
+    document.addEventListener('DOMContentLoaded', function() {
+      const inputTokensInput = document.getElementById('input-tokens');
+      const outputTokensInput = document.getElementById('output-tokens');
+
+      inputTokensInput.addEventListener('input', updateComparison);
+      outputTokensInput.addEventListener('input', updateComparison);
+    });
 
     // Exposição simples para testes automatizados e leitura pelos alunos.
     window.AppCalculator = {
       MODELS,
       formatEuro,
-      calculateCost
+      calculateCost,
+      calculateComparisonCosts,
+      getSelectedModels
     };
 
     document.addEventListener('DOMContentLoaded', initCalculator);
