@@ -325,67 +325,74 @@
   </main>
 
   <script>
-    // Preços de modelos em tempo real do OpenRouter API
+    // Preços em tempo real: 3 modelos originais + 10 do OpenRouter API
     // Preços por 1 milhão de tokens
     const MODELS = {
+      // Modelos originais (imutáveis)
+      fastmini: {
+        name: 'FastMini',
+        inputPrice: 0.10,
+        outputPrice: 0.40
+      },
+      balancedpro: {
+        name: 'BalancedPro',
+        inputPrice: 1.00,
+        outputPrice: 3.00
+      },
+      reasonmax: {
+        name: 'ReasonMax',
+        inputPrice: 5.00,
+        outputPrice: 15.00
+      },
+      // Modelos OpenRouter (imutáveis)
       inclusionai_ling_26_flash: {
         name: 'inclusionAI: Ling-2.6-flash',
         inputPrice: 0.01,
         outputPrice: 0.03
       },
-      qwen_qwen3_30b_a3b_instruct_2507: {
-        name: 'Qwen: Qwen3 30B A3B Instruct 2507',
-        inputPrice: 0.04815,
-        outputPrice: 0.19305
+      mistralai_mistral_small_32_24b_instruct: {
+        name: 'Mistral: Mistral Small 3.2 24B',
+        inputPrice: 0.075,
+        outputPrice: 0.2
       },
-      meta_llama_llama_33_70b_instruct: {
-        name: 'Meta: Llama 3.3 70B Instruct',
-        inputPrice: 0.1,
-        outputPrice: 0.32
+      nousresearch_hermes_4_70b: {
+        name: 'Nous: Hermes 4 70B',
+        inputPrice: 0.13,
+        outputPrice: 0.4
       },
-      openai_gpt_4o_mini: {
-        name: 'OpenAI: GPT-4o-mini',
-        inputPrice: 0.15,
-        outputPrice: 0.6
+      qwen_qwen3_coder_next: {
+        name: 'Qwen: Qwen3 Coder Next',
+        inputPrice: 0.11,
+        outputPrice: 0.8
       },
-      undi95_remm_slerp_l2_13b: {
-        name: 'ReMM SLERP 13B',
-        inputPrice: 0.45,
-        outputPrice: 0.65
+      nousresearch_hermes_3_llama_31_70b: {
+        name: 'Nous: Hermes 3 70B Instruct',
+        inputPrice: 0.7,
+        outputPrice: 0.7
       },
-      minimax_minimax_m21: {
-        name: 'MiniMax: MiniMax M2.1',
+      openai_gpt_41_mini: {
+        name: 'OpenAI: GPT-4.1 Mini',
+        inputPrice: 0.4,
+        outputPrice: 1.6
+      },
+      amazon_nova_2_lite_v1: {
+        name: 'Amazon: Nova 2 Lite',
         inputPrice: 0.3,
-        outputPrice: 1.2
+        outputPrice: 2.5
       },
-      perplexity_sonar: {
-        name: 'Perplexity: Sonar',
-        inputPrice: 1,
-        outputPrice: 1
+      z_ai_glm_5v_turbo: {
+        name: 'Z.ai: GLM 5V Turbo',
+        inputPrice: 1.2,
+        outputPrice: 4
       },
-      nvidia_nemotron_3_ultra_550b_a55b: {
-        name: 'NVIDIA: Nemotron 3 Ultra',
-        inputPrice: 0.5,
-        outputPrice: 2.2
-      },
-      nousresearch_hermes_4_405b: {
-        name: 'Nous: Hermes 4 405B',
-        inputPrice: 1,
-        outputPrice: 3
-      },
-      anthracite_org_magnum_v4_72b: {
-        name: 'Magnum v4 72B',
-        inputPrice: 3,
-        outputPrice: 5
-      },
-      openai_gpt_audio: {
-        name: 'OpenAI: GPT Audio',
-        inputPrice: 2.5,
+      google_gemini_25_pro: {
+        name: 'Google: Gemini 2.5 Pro',
+        inputPrice: 1.25,
         outputPrice: 10
       },
-      openai_gpt_54_image_2: {
-        name: 'OpenAI: GPT-5.4 Image 2',
-        inputPrice: 8,
+      openai_gpt_54: {
+        name: 'OpenAI: GPT-5.4',
+        inputPrice: 2.5,
         outputPrice: 15
       }
     };

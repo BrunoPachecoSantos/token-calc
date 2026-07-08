@@ -17,6 +17,7 @@ O projeto atual é uma aplicação estática de uma única página:
 - **Arquivo único:** `index.html`
 - **Stack:** HTML + CSS + JavaScript (sem framework, sem build)
 - **Execução:** abrir o `index.html` num navegador moderno
+- **Modelos:** 13 total (3 originais imutáveis + 10 do OpenRouter com preços atuais)
 
 Não há backend, persistência de dados, autenticação ou chamadas de API externas.
 
@@ -28,11 +29,24 @@ Não há backend, persistência de dados, autenticação ou chamadas de API exte
 2. **Tokens de output** (`#output-tokens`)
 3. **Modelo** (`#model-select`)
 
-Modelos disponíveis no estado atual:
+Modelos disponíveis no estado atual (13 total):
 
-- `fastmini` (FastMini)
-- `balancedpro` (BalancedPro)
-- `reasonmax` (ReasonMax)
+**Originais (imutáveis):**
+- `fastmini` (FastMini) — 0.10 / 0.40
+- `balancedpro` (BalancedPro) — 1.00 / 3.00
+- `reasonmax` (ReasonMax) — 5.00 / 15.00
+
+**OpenRouter (preços atuais, imutáveis):**
+- inclusionAI: Ling-2.6-flash — 0.01 / 0.03
+- Mistral: Mistral Small 3.2 24B — 0.075 / 0.2
+- Nous: Hermes 4 70B — 0.13 / 0.4
+- Qwen: Qwen3 Coder Next — 0.11 / 0.8
+- Nous: Hermes 3 70B Instruct — 0.7 / 0.7
+- OpenAI: GPT-4.1 Mini — 0.4 / 1.6
+- Amazon: Nova 2 Lite — 0.3 / 2.5
+- Z.ai: GLM 5V Turbo — 1.2 / 4
+- Google: Gemini 2.5 Pro — 1.25 / 10
+- OpenAI: GPT-5.4 — 2.5 / 15
 
 ### 3.2 Ação principal
 
@@ -54,17 +68,18 @@ Formato monetário atual: `toFixed(6) + ' €'`.
 
 ### 4.1 Tabela de preços
 
-Os preços são extraídos da API do OpenRouter (openrouter.ai/api/v1/models) e representam valores por **1 milhão de tokens**:
+Os preços são definidos no objeto `MODELS` e representam valores por **1 milhão de tokens**:
 
 - `inputPrice` — custo por 1M tokens de input (prompt)
 - `outputPrice` — custo por 1M tokens de output (completion)
 
-Os 12 modelos disponíveis incluem uma seleção diversa de provedores:
-- **Modelos económicos:** inclusionAI Ling-2.6-flash, Qwen3 30B, Meta Llama 3.3
-- **Modelos intermediários:** OpenAI GPT-4o-mini, ReMM SLERP, NVIDIA Nemotron
-- **Modelos premium:** Magnum v4, OpenAI GPT-5.4, OpenAI GPT Audio
+**Modelos Originais (imutáveis):**
+- FastMini: 0.10 / 0.40
+- BalancedPro: 1.00 / 3.00
+- ReasonMax: 5.00 / 15.00
 
-Os preços são obtidos da API pública do OpenRouter e refletem os preços reais praticados pelos provedores.
+**Modelos OpenRouter (preços atuais, imutáveis):**
+Os 10 modelos adicionais são obtidos da API pública do OpenRouter (openrouter.ai/api/v1/models) e refletem os preços reais praticados pelos provedores, com atualização manual das snapshots de preço.
 
 ### 4.2 Validação
 
