@@ -298,11 +298,7 @@
 
       <label for="model-select">
         Modelo
-        <select id="model-select">
-          <option value="fastmini">FastMini</option>
-          <option value="balancedpro">BalancedPro</option>
-          <option value="reasonmax">ReasonMax</option>
-        </select>
+        <select id="model-select"></select>
       </label>
 
       <button type="submit">Calcular</button>
@@ -483,6 +479,7 @@
         .getElementById('calculator-form')
         .addEventListener('submit', handleSubmit);
       
+      renderModelSelect();
       renderModelCheckboxes();
       initComparisonListener();
     }
@@ -500,6 +497,19 @@
           <label for="model-${key}">${model.name}</label>
         `;
         grid.appendChild(checkbox);
+      });
+    }
+
+    function renderModelSelect() {
+      const select = document.getElementById('model-select');
+      select.innerHTML = '';
+
+      Object.keys(MODELS).forEach(key => {
+        const model = MODELS[key];
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = model.name;
+        select.appendChild(option);
       });
     }
 
