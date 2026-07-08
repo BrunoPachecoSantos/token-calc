@@ -38,7 +38,7 @@
     }
 
     .app-card {
-      width: min(100%, 520px);
+      width: min(100%, 1040px);
       padding: 32px;
       border: 1px solid rgba(216, 225, 236, 0.75);
       border-radius: 8px;
@@ -594,11 +594,11 @@
       
       // Chart dimensions
       const padding = 20;
-      const barHeight = 30;
-      const barSpacing = 10;
-      const maxLabelWidth = 200;
+      const barHeight = 40;
+      const barSpacing = 12;
+      const maxLabelWidth = 250;
       const chartHeight = costs.length * (barHeight + barSpacing) + padding * 2;
-      const chartWidth = 700;
+      const chartWidth = 900;
       const graphWidth = chartWidth - maxLabelWidth - padding * 2;
       
       // Find max cost for scaling
@@ -631,7 +631,7 @@
         valueText.setAttribute('x', maxLabelWidth + padding + barWidth + 8);
         valueText.setAttribute('y', y + barHeight / 2);
         valueText.setAttribute('dy', '0.35em');
-        valueText.setAttribute('font-size', '12');
+        valueText.setAttribute('font-size', '15');
         valueText.setAttribute('font-weight', isCheapest ? '700' : '500');
         valueText.setAttribute('fill', isCheapest ? '#1267d8' : '#5f6f86');
         valueText.textContent = formatEuro(cost.totalCost);
@@ -642,7 +642,7 @@
         label.setAttribute('x', padding);
         label.setAttribute('y', y + barHeight / 2);
         label.setAttribute('dy', '0.35em');
-        label.setAttribute('font-size', '13');
+        label.setAttribute('font-size', '16');
         label.setAttribute('font-weight', isCheapest ? '700' : '500');
         label.setAttribute('fill', isCheapest ? '#1267d8' : '#172033');
         label.setAttribute('text-anchor', 'start');
