@@ -54,10 +54,17 @@ Formato monetário atual: `toFixed(6) + ' €'`.
 
 ### 4.1 Tabela de preços
 
-Os preços são definidos no objeto `MODELS` como valores por **1 milhão de tokens**:
+Os preços são extraídos da API do OpenRouter (openrouter.ai/api/v1/models) e representam valores por **1 milhão de tokens**:
 
-- `inputPrice`
-- `outputPrice`
+- `inputPrice` — custo por 1M tokens de input (prompt)
+- `outputPrice` — custo por 1M tokens de output (completion)
+
+Os 12 modelos disponíveis incluem uma seleção diversa de provedores:
+- **Modelos económicos:** inclusionAI Ling-2.6-flash, Qwen3 30B, Meta Llama 3.3
+- **Modelos intermediários:** OpenAI GPT-4o-mini, ReMM SLERP, NVIDIA Nemotron
+- **Modelos premium:** Magnum v4, OpenAI GPT-5.4, OpenAI GPT Audio
+
+Os preços são obtidos da API pública do OpenRouter e refletem os preços reais praticados pelos provedores.
 
 ### 4.2 Validação
 

@@ -325,67 +325,68 @@
   </main>
 
   <script>
-    // Preços fictícios por 1 milhão de tokens.
+    // Preços de modelos em tempo real do OpenRouter API
+    // Preços por 1 milhão de tokens
     const MODELS = {
-      fastmini: {
-        name: 'FastMini',
-        inputPrice: 0.10,
-        outputPrice: 0.40
+      inclusionai_ling_26_flash: {
+        name: 'inclusionAI: Ling-2.6-flash',
+        inputPrice: 0.01,
+        outputPrice: 0.03
       },
-      balancedpro: {
-        name: 'BalancedPro',
-        inputPrice: 1.00,
-        outputPrice: 3.00
+      qwen_qwen3_30b_a3b_instruct_2507: {
+        name: 'Qwen: Qwen3 30B A3B Instruct 2507',
+        inputPrice: 0.04815,
+        outputPrice: 0.19305
       },
-      reasonmax: {
-        name: 'ReasonMax',
-        inputPrice: 5.00,
-        outputPrice: 15.00
+      meta_llama_llama_33_70b_instruct: {
+        name: 'Meta: Llama 3.3 70B Instruct',
+        inputPrice: 0.1,
+        outputPrice: 0.32
       },
-      claude35sonnet: {
-        name: 'Claude 3.5 Sonnet',
-        inputPrice: 3.00,
-        outputPrice: 15.00
+      openai_gpt_4o_mini: {
+        name: 'OpenAI: GPT-4o-mini',
+        inputPrice: 0.15,
+        outputPrice: 0.6
       },
-      claude3opus: {
-        name: 'Claude 3 Opus',
-        inputPrice: 15.00,
-        outputPrice: 75.00
+      undi95_remm_slerp_l2_13b: {
+        name: 'ReMM SLERP 13B',
+        inputPrice: 0.45,
+        outputPrice: 0.65
       },
-      gpt4turbo: {
-        name: 'GPT-4 Turbo',
-        inputPrice: 10.00,
-        outputPrice: 30.00
+      minimax_minimax_m21: {
+        name: 'MiniMax: MiniMax M2.1',
+        inputPrice: 0.3,
+        outputPrice: 1.2
       },
-      gpt4o: {
-        name: 'GPT-4o',
-        inputPrice: 5.00,
-        outputPrice: 15.00
+      perplexity_sonar: {
+        name: 'Perplexity: Sonar',
+        inputPrice: 1,
+        outputPrice: 1
       },
-      geminiproadvanced: {
-        name: 'Gemini 2.0 Flash',
-        inputPrice: 0.075,
-        outputPrice: 0.30
+      nvidia_nemotron_3_ultra_550b_a55b: {
+        name: 'NVIDIA: Nemotron 3 Ultra',
+        inputPrice: 0.5,
+        outputPrice: 2.2
       },
-      llama2: {
-        name: 'Llama 2 (70B)',
-        inputPrice: 0.99,
-        outputPrice: 1.49
+      nousresearch_hermes_4_405b: {
+        name: 'Nous: Hermes 4 405B',
+        inputPrice: 1,
+        outputPrice: 3
       },
-      mistral: {
-        name: 'Mistral 7B',
-        inputPrice: 0.25,
-        outputPrice: 0.75
+      anthracite_org_magnum_v4_72b: {
+        name: 'Magnum v4 72B',
+        inputPrice: 3,
+        outputPrice: 5
       },
-      anthropicclaude2: {
-        name: 'Claude 2',
-        inputPrice: 8.00,
-        outputPrice: 24.00
+      openai_gpt_audio: {
+        name: 'OpenAI: GPT Audio',
+        inputPrice: 2.5,
+        outputPrice: 10
       },
-      cohere: {
-        name: 'Cohere Command',
-        inputPrice: 1.00,
-        outputPrice: 2.00
+      openai_gpt_54_image_2: {
+        name: 'OpenAI: GPT-5.4 Image 2',
+        inputPrice: 8,
+        outputPrice: 15
       }
     };
 
