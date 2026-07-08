@@ -157,9 +157,52 @@ Se o projeto crescer (múltiplos ficheiros):
 3. Com modelo inválido, deve ser exibida mensagem de erro apropriada.
 4. Custo total deve ser exatamente a soma de input + output.
 
+## 10. Comparação de Modelos (nova funcionalidade)
+
+### 10.1 Objetivo
+
+Permitir que utilizadores comparem rapidamente múltiplos modelos usando os mesmos valores de input/output tokens.
+
+### 10.2 Interface
+
+#### Seleção de modelos
+
+- Checkboxes para cada modelo disponível
+- Grid responsivo com todos os modelos
+- Seleção mínima: 2 modelos
+
+#### Tabela de comparação
+
+Apresenta para cada modelo:
+- Nome do modelo
+- Custo de input
+- Custo de output
+- Custo total
+
+Dados ordenados por custo total crescente.
+
+#### Destaque visual
+
+O modelo com menor custo total é destacado com:
+- Fundo com cor de acento leve
+- Badge "Mais barato" junto do nome
+
+### 10.3 Comportamento
+
+1. Renderizar checkboxes de todos os modelos no carregamento
+2. Ao selecionar 2+ modelos, calcular e exibir tabela
+3. Ao alterar valores de tokens, atualizar comparação automaticamente
+4. Se menos de 2 modelos selecionados, mostrar mensagem apropriada
+5. Se tokens vazios, pedir ao utilizador para preencher
+
+### 10.4 Validação
+
+- Aplicar as mesmas regras de `readPositiveNumber()` ao calcular
+- Mostrar erro se valores forem inválidos
+
 ## 9. Itens fora de escopo (atual)
 
-- Integração com preços reais de provedores
+- Integração com preços reais de provedores (preços são exemplares)
 - Persistência de histórico de cálculos
 - Internacionalização completa
 - Backend/API
